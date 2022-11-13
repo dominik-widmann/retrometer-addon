@@ -10,3 +10,10 @@ RUN \
 
 # Copy root filesystem
 COPY rootfs /
+
+RUN apk add --no-cache python3 py3-pip py3-smbus py3-paho-mqtt 
+RUN pip3 install python3-json numpy
+COPY test.py /
+COPY run.sh /
+RUN chmod a+x /run.sh
+CMD [ "/run.sh" ]
