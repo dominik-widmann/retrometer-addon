@@ -1,0 +1,7 @@
+configuration:
+  mqttuser:
+    name: Mqtt user name
+    description: The username to be used to connect with the mqtt broker
+  mqttpasswd:
+    name: Mqtt user password
+    description: The password to be used to connect with the mqtt broker
