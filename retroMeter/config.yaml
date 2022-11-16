@@ -19,3 +19,9 @@ devices:
 device_tree: true
 startup: services
 log_level: info
+options:
+  - mqttuser: ""
+    mqttpasswd: ""
+schema:
+  - mqttuser: str
+    mqttpasswd: str
