@@ -8,3 +8,15 @@
 - configure mqtt credentials
 - enable mqtt integration with mosquito
 - setup dashboard:
+
+### Configure mqtt sensor
+```yaml 
+# Gas volume
+mqtt:
+  sensor:
+    - name: "gas_volume"
+      state_topic: "meter/gas_volume"
+      value_template: "{{ value_json.volume }}"
+      unit_of_measurement: "m³"
+      unique_id: "gas_volume0"
+```
