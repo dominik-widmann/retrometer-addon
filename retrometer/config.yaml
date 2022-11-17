@@ -11,7 +11,7 @@ arch:
   - amd64
   - i386
 init: false
-#image: "ghcr.io/home-assistant/{arch}-addon-example"
+image: "ghcr.io/dominik-widmann/{arch}-addon-example"
 privileged:
   - SYS_ADMIN
 devices:
