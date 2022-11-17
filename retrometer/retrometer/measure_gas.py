@@ -63,7 +63,7 @@ if __name__ == "__main__":
             # if count changed, publish an mqtt message
             if last_count != count:
                 last_count = count  # store new value
-                volume = count * args.m3perTick
+                volume = count * args.m3pertick
 
                 # publish value over mqtt
                 client.publish(args.mqtttopic, json.dumps(
