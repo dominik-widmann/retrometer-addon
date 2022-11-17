@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Retro Meter
-version: "1.4.0"
+version: "1.4.1"
 slug: retrometer
 description: Retro Meter add-on
 url: "https://github.com/dominik-widmann/retroMeter-addon"
@@ -11,7 +11,7 @@ arch:
   - amd64
   - i386
 init: false
-image: "ghcr.io/dominik-widmann/{arch}-addon-example"
+image: "ghcr.io/dominik-widmann/{arch}-retrometer-addon"
 privileged:
   - SYS_ADMIN
 devices:
