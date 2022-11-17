@@ -7,11 +7,6 @@ import paho.mqtt.client as mqtt
 import json
 
 
-m3perTick = 0.01
-
-MQTT_OUTPUT_TOPIC = "meter/gas_volume"
-
-
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -32,6 +27,10 @@ if __name__ == "__main__":
         description='Gas meter application that publishes gas meter readings to mqtt homeassistant.')
     parser.add_argument('--mqttuser', help='mqtt user')
     parser.add_argument('--mqttpasswd', help='mqtt user password')
+    parser.add_argument(
+        '--mqtttopic', help='mqtt topic name to publish measurements to')
+    parser.add_argument(
+        '--m3pertick', help='The volume of gas per meter tick', type=float)
     parser.add_argument('-v', action='store_true')
     args = parser.parse_args()
 
@@ -64,10 +63,10 @@ if __name__ == "__main__":
             # if count changed, publish an mqtt message
             if last_count != count:
                 last_count = count  # store new value
-                volume = count * m3perTick
+                volume = count * args.m3perTick
 
                 # publish value over mqtt
-                client.publish(MQTT_OUTPUT_TOPIC, json.dumps(
+                client.publish(args.mqtttopic, json.dumps(
                     {"volume": volume, "count": count}))
 
             time.sleep(sample_time)

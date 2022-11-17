@@ -1,9 +1,9 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Retro Meter
 version: "1.2.0"
-slug: retroMeter-addon
+slug: retrometer
 description: Retro Meter add-on
-url: "https://github.com/home-assistant/addons-example/tree/main/example"
+url: "https://github.com/dominik-widmann/retroMeter-addon"
 arch:
   - armhf
   - armv7
@@ -11,10 +11,21 @@ arch:
   - amd64
   - i386
 init: false
-map:
-  - share:rw
-options:
-  message: "Hello world..."
-schema:
-  message: "str?"
 #image: "ghcr.io/home-assistant/{arch}-addon-example"
+privileged:
+  - SYS_ADMIN
+devices:
+  - /dev/i2c-1
+device_tree: true
+startup: services
+log_level: info
+options:
+  mqttuser: null
+  mqttpasswd: null
+  mqtttopic: "meter/gas_volume"
+  m3pertick: null
+schema:
+  mqttuser: str
+  mqttpasswd: password
+  mqtttopic: str
+  m3pertick: float
