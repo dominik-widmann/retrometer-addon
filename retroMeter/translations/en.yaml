@@ -5,3 +5,9 @@ configuration:
   mqttpasswd:
     name: Mqtt user password
     description: The password to be used to connect with the mqtt broker
+  mqtttopic:
+    name: The Mqtt topic name
+    description: The retro meter publishes measurements to this mqtt topic
+  m3pertick:
+    name: Gas volume represented by one tick of the meter
+    description: This constant is used to convert meter ticks into volume

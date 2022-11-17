@@ -22,6 +22,10 @@ log_level: info
 options:
   mqttuser: null
   mqttpasswd: null
+  mqtttopic: "meter/gas_volume"
+  m3pertick: null
 schema:
   mqttuser: str
   mqttpasswd: password
+  mqtttopic: str
+  m3pertick: float
