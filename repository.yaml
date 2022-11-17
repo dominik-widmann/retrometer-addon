@@ -1,4 +1,4 @@
 # https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
 name: RetroMeter add-on repository
 url: "https://github.com/dominik-widmann/retrometer-addon"
-maintainer: Dominik Widmann <dominik.widmann@live.de
+maintainer: Dominik Widmann
