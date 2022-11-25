@@ -43,7 +43,7 @@ class TestScalarPeriodCounter(unittest.TestCase):
         self.assertEqual(self.counter.get_count(), 2)
 
 
-    def test_four_sines(self):
+    def test_sines_with_noise_and_outliers(self):
         # Given a scalar period counter configured with the above parameters
 
         # When it gets excited with a sine, then nothing+a bit of noise and then a sine again
@@ -55,9 +55,20 @@ class TestScalarPeriodCounter(unittest.TestCase):
         times2 = times2 + times1[-1]+0.05
         values3 = values1
         times3 = times1 + times2[-1] + 0.05
+        times4, values4 = self.helper_generate_sine(amplitude=290, period=15.0, end_time=150.0, sample_time=0.05)
+        times4 = times4 + times3[-1] + 0.05
 
-        times = np.concatenate([times0, times1, times2, times3])
-        values = np.concatenate([values0, values1, values2, values3])
+        times = np.concatenate([times0, times1, times2, times3, times4])
+        values = np.concatenate([values0, values1, values2, values3,values4])
+
+        # Add some crazy outliers to make sure the calibrator handles them correctly
+        outlier_factors = np.ones(values.shape)*1.0
+        for index in [1,87,130,202,543,2345,4352]:
+            outlier_factors[index] = 100.0
+        values = np.multiply(values, outlier_factors)
+
+        # Add a bit of noise
+        values = np.random.normal(values, 10.0)
 
         counts = []
         calib_min = []
@@ -80,8 +91,8 @@ class TestScalarPeriodCounter(unittest.TestCase):
         # plt.plot(times,counts)
         # plt.show()
 
-        # We expect a count of 12 + 12 = 24
-        self.assertEqual(self.counter.get_count(), 24)
+        # We expect a count of 12 + 12 + 10 = 34
+        self.assertEqual(self.counter.get_count(), 34)
 
 if __name__ == '__main__':
     unittest.main()

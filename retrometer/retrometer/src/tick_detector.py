@@ -47,8 +47,8 @@ class MinMaxCalibrator:
             max_buffer_length (_type_): _description_
         """
         self._value_window = collections.deque(maxlen=max_buffer_length)
-        self._current_min = 0
-        self._current_max = 0
+        self._current_min = np.inf
+        self._current_max = -np.inf
         self._current_std = 0
         self._min_amplitude = min_amplitude
         self._max_amplitude = max_amplitude
@@ -65,9 +65,9 @@ class MinMaxCalibrator:
         self._value_window.append(value)
         # check if a signification amount of excitation has been observed
         if self._is_sufficiently_excited():
-            # If yes, update the min and max values 
-            self._current_min = min(self._value_window)
-            self._current_max = max(self._value_window)
+            # If yes, update the min and max values with 5 and 95 percentiles to be robust against outliers
+            self._current_min = min(self._current_min, np.percentile(self._value_window,5))
+            self._current_max = max(self._current_max, np.percentile(self._value_window,95))
             # Set the calibrated flag
             self._is_calibrated = True
 
@@ -82,8 +82,8 @@ class MinMaxCalibrator:
         # Condition 1: buffer full
         is_buffer_full = len(self._value_window) == self._value_window.maxlen
 
-        # Condition 2: min and max amplitude between min and max value are satisfied
-        biggest_amplitude = abs(max(self._value_window) - min(self._value_window))/2.0
+        # Condition 2: min and max amplitude between 5% and 95% value are satisfied
+        biggest_amplitude = abs(np.percentile(self._value_window,95) - np.percentile(self._value_window,5))/2.0
         is_amplitude_range_ok =  biggest_amplitude > self._min_amplitude and biggest_amplitude < self._max_amplitude
 
         # Condition 3: high enough standard deviation
