@@ -70,15 +70,15 @@ class TestScalarPeriodCounter(unittest.TestCase):
             calib_max.append(self.counter._calibrator._current_max)
             calib_std.append(self.counter._calibrator._current_std)
 
-        # import matplotlib.pyplot as plt
-        # plt.subplot(2,1,1)
-        # plt.plot(times, values)
-        # plt.plot(times,calib_min)
-        # plt.plot(times,calib_max)
-        # plt.plot(times, calib_std)
-        # plt.subplot(2,1,2)
-        # plt.plot(times,counts)
-        # plt.show()
+        import matplotlib.pyplot as plt
+        plt.subplot(2,1,1)
+        plt.plot(times, values)
+        plt.plot(times,calib_min)
+        plt.plot(times,calib_max)
+        plt.plot(times, calib_std)
+        plt.subplot(2,1,2)
+        plt.plot(times,counts)
+        plt.show()
 
         # We expect a count of 12 + 12 = 24
         self.assertEqual(self.counter.get_count(), 24)
