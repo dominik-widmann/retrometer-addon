@@ -5,7 +5,7 @@ import numpy as np
 class TestScalarPeriodCounter(unittest.TestCase):
     def setUp(self) -> None:
         sample_time = 0.05
-        max_period_time = 1.0  # seconds
+        max_period_time = 5.0  # seconds
         max_period_length = int(max_period_time/sample_time)
         min_amplitude = 20
         max_amplitude = 8000
@@ -47,15 +47,17 @@ class TestScalarPeriodCounter(unittest.TestCase):
         # Given a scalar period counter configured with the above parameters
 
         # When it gets excited with a sine, then nothing+a bit of noise and then a sine again
+        times0, values0 = self.helper_generate_sine(amplitude=5, period=.2, end_time=200.0, sample_time=0.05) 
         times1, values1 = self.helper_generate_sine(amplitude=300, period=5.0, end_time=60.0, sample_time=0.05)
+        times1 = times1 + times0[-1]+0.05
         pause_time = 5.0*100.0 # more than one buffer length
         times2, values2 = self.helper_generate_sine(amplitude=5, period=.2, end_time=200.0, sample_time=0.05)
         times2 = times2 + times1[-1]+0.05
         values3 = values1
         times3 = times1 + times2[-1] + 0.05
 
-        times = np.concatenate([times1, times2, times3])
-        values = np.concatenate([values1, values2, values3])
+        times = np.concatenate([times0, times1, times2, times3])
+        values = np.concatenate([values0, values1, values2, values3])
 
         counts = []
         calib_min = []
@@ -68,18 +70,18 @@ class TestScalarPeriodCounter(unittest.TestCase):
             calib_max.append(self.counter._calibrator._current_max)
             calib_std.append(self.counter._calibrator._current_std)
 
-        import matplotlib.pyplot as plt
-        plt.subplot(2,1,1)
-        plt.plot(times, values)
-        plt.plot(times,calib_min)
-        plt.plot(times,calib_max)
-        plt.plot(times, calib_std)
-        plt.subplot(2,1,2)
-        plt.plot(times,counts)
-        plt.show()
+        # import matplotlib.pyplot as plt
+        # plt.subplot(2,1,1)
+        # plt.plot(times, values)
+        # plt.plot(times,calib_min)
+        # plt.plot(times,calib_max)
+        # plt.plot(times, calib_std)
+        # plt.subplot(2,1,2)
+        # plt.plot(times,counts)
+        # plt.show()
 
-        # We expect a count of 2 + 12 = 14
-        self.assertEqual(self.counter.get_count(), 14)
+        # We expect a count of 12 + 12 = 24
+        self.assertEqual(self.counter.get_count(), 24)
 
 if __name__ == '__main__':
     unittest.main()
