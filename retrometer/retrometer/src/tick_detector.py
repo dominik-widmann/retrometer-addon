@@ -49,6 +49,7 @@ class MinMaxCalibrator:
         self._value_window = collections.deque(maxlen=max_buffer_length)
         self._current_min = 0
         self._current_max = 0
+        self._current_std = 0
         self._min_amplitude = min_amplitude
         self._max_amplitude = max_amplitude
         self._min_std = min_std
@@ -64,7 +65,7 @@ class MinMaxCalibrator:
         self._value_window.append(value)
         # check if a signification amount of excitation has been observed
         if self._is_sufficiently_excited():
-            # If yes, update the min and max values
+            # If yes, update the min and max values 
             self._current_min = min(self._value_window)
             self._current_max = max(self._value_window)
             # Set the calibrated flag
@@ -86,7 +87,8 @@ class MinMaxCalibrator:
         is_amplitude_range_ok =  biggest_amplitude > self._min_amplitude and biggest_amplitude < self._max_amplitude
 
         # Condition 3: high enough standard deviation
-        is_variance_big_enough = np.std(self._value_window) > self._min_std
+        self._current_std = np.std(self._value_window)
+        is_variance_big_enough = self._current_std > self._min_std
 
         return is_buffer_full and is_amplitude_range_ok and is_variance_big_enough
 
