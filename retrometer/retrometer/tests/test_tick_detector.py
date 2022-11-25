@@ -43,7 +43,7 @@ class TestScalarPeriodCounter(unittest.TestCase):
         self.assertEqual(self.counter.get_count(), 2)
 
 
-    def test_three_sines(self):
+    def test_four_sines(self):
         # Given a scalar period counter configured with the above parameters
 
         # When it gets excited with a sine, then nothing+a bit of noise and then a sine again
