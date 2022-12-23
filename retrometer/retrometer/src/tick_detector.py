@@ -142,6 +142,8 @@ class ScalarPeriodCounter:
 
         # Check if calibrator is calibrated and update the trigger with the min max estimates until calibration is confirmed
         self._calibration_progress_percentage = self._calibrator.get_calibration_progress_percentage()
+        print("Calibration progress: " +
+              str(self._calibration_progress_percentage) + " %")
         if self._calibrator.is_calibrated() and self._calibration_progress_percentage < 100:
             # If yes, get the min max value estimates and configure the hysteresisTrigger with them until calibration is at 100
             min, max = self._calibrator.get_expected_min_max()
