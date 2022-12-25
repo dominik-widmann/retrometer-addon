@@ -1,4 +1,7 @@
 # RetroMeter changelog
+## Version 1.6.2
+* Bugfix for calibration that never finished
+
 ## Version 1.6.1
 * Auto calibration only runs 1 day
 * Software quality measures
