@@ -44,9 +44,9 @@ class TestMinMaxCalibrator(unittest.TestCase):
         for value in values:
             self.calibrator.input(value)
 
-        # We expect progress at 1% just after sufficient excitation was available
-        self.assertAlmostEqual(
-            self.calibrator.get_calibration_progress_percentage(), 1, delta=3)
+        # We expect progress at more than 1% just after sufficient excitation was available
+        self.assertGreater(
+            self.calibrator.get_calibration_progress_percentage(), 1)
 
         # We expect the min max values to be correctly estimated
         estimated_min_value = np.percentile(values, 5)
