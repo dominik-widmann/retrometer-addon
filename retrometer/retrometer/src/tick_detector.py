@@ -62,6 +62,8 @@ class MinMaxCalibrator:
         self._min_std = min_std
         self._is_calibrated = False
         self._calibration_confirm_duration = calibration_confirm_duration
+        # We need to receive a first value before we can initialize this
+        self._calibration_confirm_start_time = None
 
     def input(self, value):
         """provide an input value for calibration. Should be called regularly. Triggers all sorts of calculations
@@ -80,8 +82,9 @@ class MinMaxCalibrator:
                 self._current_max, np.percentile(self._value_window, 95))
             # Set the calibrated flag
             self._is_calibrated = True
-            # Start calibration confirmation
-            self._calibration_confirm_start_time = time.monotonic()
+            # Start calibration confirmation if it is not started yet
+            if self._calibration_confirm_start_time is None:
+                self._calibration_confirm_start_time = time.monotonic()
 
     def is_calibrated(self):
         return self._is_calibrated
@@ -94,8 +97,8 @@ class MinMaxCalibrator:
         else:
             calibration_duration_elapsed = time.monotonic(
             ) - self._calibration_confirm_start_time
-            raw_percentage = 100 * calibration_duration_elapsed / \
-                self._calibration_confirm_duration
+            raw_percentage = int(100 * calibration_duration_elapsed /
+                                 self._calibration_confirm_duration)
             # Return a value between 1 and 100
             return min(max(1, raw_percentage), 100)
 

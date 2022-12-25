@@ -57,12 +57,18 @@ class TestMinMaxCalibrator(unittest.TestCase):
                                estimated_max_value, delta=2)
 
         # We expect around 50 percent progress after 5 seconds since we configured 10s calibration confirmation time
-        time.sleep(5)
+        for timepoint in range(0, 5):
+            self.calibrator.input(30.0)
+            print(self.calibrator.get_calibration_progress_percentage())
+            time.sleep(1)
         self.assertAlmostEqual(
             self.calibrator.get_calibration_progress_percentage(), 50, delta=5)
 
         # We expect 100% progress after 11s, which is 1s beyond calibration confirmation time
-        time.sleep(6)
+        for timepoint in range(0, 6):
+            self.calibrator.input(30.0)
+            print(self.calibrator.get_calibration_progress_percentage())
+            time.sleep(1)
         self.assertEqual(
             self.calibrator.get_calibration_progress_percentage(), 100)
 
